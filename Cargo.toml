@@ -1,0 +1,18 @@
+[package]
+name = "rustos"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "rustos"
+path = "src/main.rs"
+
+[dependencies]
+
+[profile.dev]
+panic = "abort"
+opt-level = 1
+
+[profile.release]
+panic = "abort"
+opt-level = 3

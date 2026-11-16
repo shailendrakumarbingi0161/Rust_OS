@@ -1,0 +1,9 @@
+[target.i686-unknown-none]
+rustflags = ["-C", "link-arg=-Tsrc/linker.ld"]
+
+[target.'cfg(target_os = "none")']
+rustflags = ["-C", "link-arg=-Tsrc/linker.ld"]
+
+[unstable]
+build-std = ["core", "alloc"]
+build-std-features = ["compiler-builtins-mem"]
