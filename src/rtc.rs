@@ -63,7 +63,6 @@ pub fn read_datetime() -> (u16, u8, u8, u8, u8, u8) {
     let day = bcd_to_bin(unsafe { read_register(REG_DAY) });
     let month = bcd_to_bin(unsafe { read_register(REG_MONTH) });
     let year = bcd_to_bin(unsafe { read_register(REG_YEAR) }) as u16 + 2000;
-    unsafe { asm!("sti"); }
     (year, month, day, hour, min, sec)
 }
 

@@ -47,6 +47,9 @@ fn print_help() {
     vga_println!("  chmod <6|4> <file> - set permissions");
     vga_println!("  wc <file> - line/word/byte count");
     vga_println!("  vi <file> - simple line editor");
+    vga_println!("  net / ifconfig - show Network Connectivity & Diagnostics");
+    vga_println!("  hw / sysinfo   - show Hardware Compatibility Matrix");
+    vga_println!("  desktop / menu - return to Graphical Desktop UI");
     vga_println!("  games - return to desktop menu");
     vga_println!("  research / deadlock - launch Deadlock Detection Lab");
 }
@@ -126,6 +129,7 @@ fn run_command(cmd: &str) {
             }
         },
         "whoami" => vga_println!("root"),
+        "helloworld" => vga_println!("helloworld"),
         "uname" => vga_println!("RustOS 0.1 i686"),
         "hostname" => vga_println!("rustos"),
         "uptime" => {
@@ -260,6 +264,9 @@ fn run_command(cmd: &str) {
             let _ = fs::write_file(filename, content.as_bytes());
         },
         "games" => { crate::menu::run(); },
+        "desktop" | "menu" | "gui" | "exit" => { crate::menu::run(); },
+        "net" | "network" | "ifconfig" | "ping" => { crate::net::run(); },
+        "hw" | "hardware" | "sysinfo" => { crate::hw::run(); },
         "research" | "deadlock" => { crate::deadlock_lab::run(); },
         "echo" => {
             if let Some(idx) = parts.iter().position(|&p| p == ">") {

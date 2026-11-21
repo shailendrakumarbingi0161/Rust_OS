@@ -37,7 +37,7 @@ set timeout=3
 set default=0
 
 menuentry "RustOS" {
-    multiboot2 /boot/rustos.elf
+    multiboot /boot/rustos.elf
     boot
 }
 EOF

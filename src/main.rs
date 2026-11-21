@@ -21,7 +21,10 @@ mod menu;
 mod snake;
 mod snakes_and_ladders;
 mod car_dodge;
+mod info;
 mod deadlock_lab;
+mod net;
+mod hw;
 mod allocator;
 
 use core::panic::PanicInfo;
@@ -37,27 +40,36 @@ pub extern "C" fn rust_main() {
     vga::clear_screen();
     // Write welcome message via VGA and serial (serial log used for VirtualBox boot test)
     println!("Hello, RustOS!");
+    serial::write_str("Hello, RustOS!\n");
     serial::write_str("RustOS booted\n");
 
     // Initialise hardware
     unsafe {
+        core::arch::asm!("cli");
         serial::write_str("Before GDT init\n");
         gdt::init();
         serial::write_str("After GDT init\n");
         pic::remap(0x20, 0x28);
         idt::init();
+        serial::write_str("After IDT init\n");
         pit::init();
         keyboard::init();
-        core::arch::asm!("sti");
     }
 
     // Show current date-time
     rtc::print_datetime();
+    // Print hardware / NIC info
+    info::print_hardware_info();
 
     // Initialise in-memory file system
     fs::init();
 
-    // Drop into interactive shell
+    serial::write_str("Entering Desktop UI\n");
+
+    // Launch Graphical Desktop Environment
+    menu::run();
+
+    // Drop into interactive shell if desktop exits
     shell::run();
 
     // If shell ever returns, halt CPU

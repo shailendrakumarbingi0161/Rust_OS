@@ -51,6 +51,30 @@ pub fn clear_screen() {
     set_cursor(0, 0);
 }
 
+/// Write a string directly at (row, col) without advancing cursor or scrolling.
+pub fn write_at(row: usize, col: usize, s: &str, color: u8) {
+    if row >= HEIGHT { return; }
+    let buf = BUFFER_ADDR as *mut u16;
+    for (i, c) in s.chars().enumerate() {
+        let c_col = col + i;
+        if c_col >= WIDTH { break; }
+        let offset = row * WIDTH + c_col;
+        unsafe {
+            *buf.add(offset) = (c as u8 as u16) | ((color as u16) << 8);
+        }
+    }
+}
+
+/// Write a single character directly at (row, col) with color attribute.
+pub fn write_char_at(row: usize, col: usize, c: char, color: u8) {
+    if row >= HEIGHT || col >= WIDTH { return; }
+    let buf = BUFFER_ADDR as *mut u16;
+    let offset = row * WIDTH + col;
+    unsafe {
+        *buf.add(offset) = (c as u8 as u16) | ((color as u16) << 8);
+    }
+}
+
 /// Scroll screen up by one line.
 fn scroll() {
     let buf = BUFFER_ADDR as *mut u16;

@@ -83,4 +83,6 @@ if (-not $vmExists) {
 
 Write-Host "Starting VirtualBox VM: $vmName ..."
 & $vboxExePath startvm $vmName --type gui
+Start-Sleep -Seconds 2
+& $vboxExePath controlvm $vmName setfullscreen on
 Write-Host "✅ VM started successfully!"
